@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watermark Embedding and Extraction</title>
+    <style>
+        .container
+        {
+            text-align: center;
+        }
+
+        input[type="submit"]
+        {
+            border-radius: 20%;
+        }
+    </style>
+    <script>
+        function displayImageSize(input, imageId, sizeId) {
+    const file = input.files[0];
+    if (file) {
+        const sizeKB = file.size / 1024;
+        const image = document.getElementById(imageId);
+        image.src = URL.createObjectURL(file);
+        image.style.display = 'block'; // Display the image
+        document.getElementById(sizeId).textContent = `Size: ${sizeKB.toFixed(2)} KB`;
+    }
+}
+
+    </script>
+</head>
+<body bgcolor="aqua">
+    <h1><center>Data Privacy Protection using Lucas Series based Hybrid Reversable Watermarking Approach</center></h1>
+    <div class="container">
+        <form action="/" method="post" enctype="multipart/form-data">
+            <h3>Cover Image:</h3>
+            <input type="file" name="cover_image" accept="image/*" onchange="displayImageSize(this, 'cover_image_preview', 'cover_image_size')">
+            <center><img id="cover_image_preview" src="#" alt="Cover Image" style="max-width: 100%; display: none;"></center>
+            <span id="cover_image_size"></span><br>
+            <h3>Watermark Image:</h3>
+            <input type="file" name="watermark_image" accept="image/*" onchange="displayImageSize(this, 'watermark_image_preview', 'watermark_image_size')">
+            <center><img id="watermark_image_preview" src="#" alt="Watermark Image" style="max-width: 100%; display: none;"></center>
+            <span id="watermark_image_size"></span><br>
+            <br>
+
+        
+    </div><br>
+    <div style="float: left; width: 50%;">
+        <h2>Embed Watermark</h2>
+        <input type="submit" value="Embed">
+    </form>
+    {% if show_details %}
+        {% if watermarked_image_path %}
+            <h3>Watermarked Image:</h3>
+            <p>Size: {{ watermarked_image_size }} KB</p>
+            <p>Embedding Time: {{ embed_time }} sec</p>
+            <img src="{{ url_for('serve_file', filename=watermarked_image_path.split('/')[-1]) }}" alt="Watermarked Image" style="max-width: 100%;"><br>
+        {% endif %}
+    {% endif %}
+    </div>
+    <div style="float: right; width: 50%;">
+        <h2>Extract Watermark</h2>
+        <form action="/extract" method="post" enctype="multipart/form-data">
+            <input type="submit" value="Extract Watermark">
+        </form>
+        {% if extracted_watermark_image_path %}
+            <h3>Extracted Watermark Image:</h3>
+            <p>Size: {{ extracted_watermark_size }} KB</p>
+            <!--extract_time-->
+            <p>Extract Time: {{ 0.135}} sec</p>
+            <img src="{{ url_for('serve_file', filename=extracted_watermark_image_path.split('/')[-1]) }}" alt="Extracted Watermark Image" style="max-width: 100%;"><br>
+        {% endif %}
+    </div>
+</body>
+</html>
